@@ -9,4 +9,10 @@
     <ProjectReference Include="..\ChatProtocol\ChatProtocol.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="users.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

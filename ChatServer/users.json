@@ -1,0 +1,12 @@
+﻿[
+    {
+        "Id": 1,
+        "Username": "Admin",
+        "Password": "admin"
+    },
+    {
+        "Id": 2,
+        "Username": "Demo",
+        "Password": "demo"
+    }
+]

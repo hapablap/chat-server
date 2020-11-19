@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Text.Json;
 
 namespace ChatServer
 {
@@ -13,6 +15,7 @@ namespace ChatServer
         private TcpListener tcpListener;
 
         private List<TcpClient> clients = new List<TcpClient>();
+        private List<User> users = new List<User>();
 
         public Server(int port, string ipAddress)
         {
@@ -25,6 +28,9 @@ namespace ChatServer
             IPAddress localAddress = IPAddress.Parse(ipAddress);
             tcpListener = new TcpListener(localAddress, port);
             tcpListener.Start();
+
+            string userJson = File.ReadAllText("users.json");
+            users = JsonSerializer.Deserialize<List<User>>(userJson);
         }
 
         public bool HasPassword()
@@ -59,6 +65,16 @@ namespace ChatServer
         public List<TcpClient> GetClients()
         {
             return clients;
+        }
+
+        public void AddUsers(User user)
+        {
+            users.Add(user);
+        }
+
+        public List<User> GetUsers()
+        {
+            return users;
         }
 
         public TcpClient AcceptTcpClient()

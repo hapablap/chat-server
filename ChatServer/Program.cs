@@ -24,6 +24,8 @@ namespace ChatServer
                 {
                     data = System.Text.Encoding.UTF8.GetString(bytes, 0, i);
 
+                    // Verschlüsselung: data entschlüsseln
+
                     GenericMessage genericMessage = JsonSerializer.Deserialize<GenericMessage>(data);
 
                     IMessage message = MessageFactory.GetMessage(genericMessage.MessageId, data);
