@@ -10,7 +10,7 @@ namespace ChatServer.MessageHandler
         {
             ChatMessage chatMessage = message as ChatMessage;
 
-            User user = server.GetUsers().Find(u => u.SessionId == chatMessage.SessionId);
+            User user = server.GetUsers().Find(u => u.SessionIds.Contains(chatMessage.SessionId));
 
             if (user != null)
             {

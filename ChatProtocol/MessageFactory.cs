@@ -16,6 +16,8 @@ namespace ChatProtocol
                     return JsonSerializer.Deserialize<DisconnectMessage>(json);
                 case 4:
                     return JsonSerializer.Deserialize<ConnectResponseMessage>(json);
+                case 5:
+                    return JsonSerializer.Deserialize<UserCountMessage>(json);
             }
 
             return null;
