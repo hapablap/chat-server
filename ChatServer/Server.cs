@@ -62,6 +62,11 @@ namespace ChatServer
             clients.Add(client);
         }
 
+        public void RemoveClient(TcpClient client)
+        {
+            clients.Remove(client);
+        }
+
         public List<TcpClient> GetClients()
         {
             return clients;

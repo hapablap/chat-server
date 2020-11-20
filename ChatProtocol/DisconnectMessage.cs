@@ -2,6 +2,8 @@
 {
     public class DisconnectMessage : IMessage
     {
+        public string SessionId { get; set; }
+
         public int MessageId
         {
             get
