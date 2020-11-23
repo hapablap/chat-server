@@ -14,6 +14,7 @@ namespace ChatServer.MessageHandler
 
             if (user != null)
             {
+                chatMessage.SessionId = string.Empty;
                 string json = JsonSerializer.Serialize(chatMessage);
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(json);
 
