@@ -1,16 +1,14 @@
 ﻿namespace ChatProtocol
 {
-    public class ChatMessage : IMessage
+    public class UserListRequestMessage : IMessage
     {
         public string SessionId { get; set; }
-        public string Content { get; set; }
-        public int UserId { get; set; }
 
         public int MessageId
         {
             get
             {
-                return 1;
+                return 6;
             }
             set { }
         }

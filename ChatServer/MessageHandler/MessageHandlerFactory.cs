@@ -12,6 +12,8 @@
                     return new ConnectMessageHandler();
                 case 3:
                     return new DisconnectMessageHandler();
+                case 6:
+                    return new UserListRequestMessageHandler();
             }
 
             return null;
