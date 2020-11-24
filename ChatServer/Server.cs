@@ -8,6 +8,8 @@ namespace ChatServer
 {
     public class Server
     {
+        const string USERS_FILE = "users.json";
+
         private int port;
         private string ipAddress;
         private string password;
@@ -16,6 +18,9 @@ namespace ChatServer
 
         private List<TcpClient> clients = new List<TcpClient>();
         private List<User> users = new List<User>();
+
+        public int UsernameMinLength = 3;
+        public int PasswordMinLength = 3;
 
         public Server(int port, string ipAddress)
         {
@@ -29,7 +34,7 @@ namespace ChatServer
             tcpListener = new TcpListener(localAddress, port);
             tcpListener.Start();
 
-            var userJson = File.ReadAllText("users.json");
+            var userJson = File.ReadAllText(USERS_FILE);
             users = JsonSerializer.Deserialize<List<User>>(userJson);
         }
 
@@ -72,7 +77,7 @@ namespace ChatServer
             return clients;
         }
 
-        public void AddUsers(User user)
+        public void AddUser(User user)
         {
             users.Add(user);
         }
@@ -80,6 +85,12 @@ namespace ChatServer
         public List<User> GetUsers()
         {
             return users;
+        }
+
+        public void SaveUsers()
+        {
+            var userJson = JsonSerializer.Serialize(users);
+            File.WriteAllText(USERS_FILE, userJson);
         }
 
         public TcpClient AcceptTcpClient()

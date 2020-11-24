@@ -1,4 +1,5 @@
 ﻿using ChatProtocol;
+using ChatServer.Extension;
 using ChatServer.MessageHandler;
 using System;
 using System.Net.Sockets;
@@ -11,7 +12,7 @@ namespace ChatServer
     {
         static void HandleClient(Server server, TcpClient client)
         {
-            var bytes = new byte[256];
+            var bytes = new byte[1024];
             string data;
 
             while (true)
@@ -42,6 +43,8 @@ namespace ChatServer
             {
                 server.SetPassword("test123");
                 server.Start();
+
+                Console.WriteLine($"{server.UserCount()} users registered.");
 
                 while (true)
                 {
