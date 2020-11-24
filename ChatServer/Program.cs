@@ -11,12 +11,12 @@ namespace ChatServer
     {
         static void HandleClient(Server server, TcpClient client)
         {
-            byte[] bytes = new byte[256];
+            var bytes = new byte[256];
             string data;
 
             while (true)
             {
-                NetworkStream stream = client.GetStream();
+                var stream = client.GetStream();
 
                 int i;
 
@@ -26,11 +26,9 @@ namespace ChatServer
 
                     // Verschlüsselung: data entschlüsseln
 
-                    GenericMessage genericMessage = JsonSerializer.Deserialize<GenericMessage>(data);
-
-                    IMessage message = MessageFactory.GetMessage(genericMessage.MessageId, data);
-
-                    IMessageHandler handler = MessageHandlerFactory.GetMessageHandler(genericMessage.MessageId);
+                    var genericMessage = JsonSerializer.Deserialize<GenericMessage>(data);
+                    var message = MessageFactory.GetMessage(genericMessage.MessageId, data);
+                    var handler = MessageHandlerFactory.GetMessageHandler(genericMessage.MessageId);
                     handler.Execute(server, client, message);
                 }
             }
@@ -38,7 +36,7 @@ namespace ChatServer
 
         static void Main()
         {
-            Server server = new Server(13000, "127.0.0.1");
+            var server = new Server(13000, "127.0.0.1");
 
             try
             {
@@ -49,10 +47,10 @@ namespace ChatServer
                 {
                     Console.Write("Waiting for a connection... ");
 
-                    TcpClient client = server.AcceptTcpClient();
+                    var client = server.AcceptTcpClient();
                     Console.WriteLine("Connected!");
 
-                    Thread thread = new Thread(() => HandleClient(server, client));
+                    var thread = new Thread(() => HandleClient(server, client));
                     thread.Start();
                 }
             }

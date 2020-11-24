@@ -25,11 +25,11 @@ namespace ChatServer
 
         public void Start()
         {
-            IPAddress localAddress = IPAddress.Parse(ipAddress);
+            var localAddress = IPAddress.Parse(ipAddress);
             tcpListener = new TcpListener(localAddress, port);
             tcpListener.Start();
 
-            string userJson = File.ReadAllText("users.json");
+            var userJson = File.ReadAllText("users.json");
             users = JsonSerializer.Deserialize<List<User>>(userJson);
         }
 

@@ -9,9 +9,9 @@ namespace ChatServer.MessageHandler
     {
         public void Execute(Server server, TcpClient client, IMessage message)
         {
-            DisconnectMessage disconnectMessage = message as DisconnectMessage;
+            var disconnectMessage = message as DisconnectMessage;
 
-            User user = server.GetUsers().Find(u => u.SessionIds.Contains(disconnectMessage.SessionId));
+            var user = server.GetUsers().Find(u => u.SessionIds.Contains(disconnectMessage.SessionId));
 
             if(user != null)
             {
@@ -21,16 +21,16 @@ namespace ChatServer.MessageHandler
                 if (user.SessionIds.Count == 0)
                 {
                     // Send user count to all clients (broadcast)
-                    UserCountMessage userCountMessage = new UserCountMessage
+                    var userCountMessage = new UserCountMessage
                     {
                         UserCount = server.GetUsers().Count,
                         UserOnlineCount = server.GetUsers().Count(u => u.SessionIds.Count > 0)
                     };
 
-                    string userCountMessageJson = JsonSerializer.Serialize(userCountMessage);
-                    byte[] userCountMessageBytes = System.Text.Encoding.UTF8.GetBytes(userCountMessageJson);
+                    var userCountMessageJson = JsonSerializer.Serialize(userCountMessage);
+                    var userCountMessageBytes = System.Text.Encoding.UTF8.GetBytes(userCountMessageJson);
 
-                    foreach (TcpClient remoteClient in server.GetClients())
+                    foreach (var remoteClient in server.GetClients())
                     {
                         remoteClient.GetStream().Write(userCountMessageBytes, 0, userCountMessageBytes.Length);
                     }

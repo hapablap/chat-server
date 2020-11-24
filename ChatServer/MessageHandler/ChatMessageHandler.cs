@@ -8,18 +8,18 @@ namespace ChatServer.MessageHandler
     {
         public void Execute(Server server, TcpClient client, IMessage message)
         {
-            ChatMessage chatMessage = message as ChatMessage;
+            var chatMessage = message as ChatMessage;
 
-            User user = server.GetUsers().Find(u => u.SessionIds.Contains(chatMessage.SessionId));
+            var user = server.GetUsers().Find(u => u.SessionIds.Contains(chatMessage.SessionId));
 
             if (user != null)
             {
                 chatMessage.SessionId = string.Empty;
                 chatMessage.UserId = user.Id;
-                string json = JsonSerializer.Serialize(chatMessage);
-                byte[] msg = System.Text.Encoding.UTF8.GetBytes(json);
+                var json = JsonSerializer.Serialize(chatMessage);
+                var msg = System.Text.Encoding.UTF8.GetBytes(json);
 
-                foreach (TcpClient remoteClient in server.GetClients())
+                foreach (var remoteClient in server.GetClients())
                 {
                     remoteClient.GetStream().Write(msg, 0, msg.Length);
                 }

@@ -10,22 +10,22 @@ namespace ChatServer.MessageHandler
     {
         public void Execute(Server server, TcpClient client, IMessage message)
         {
-            ConnectMessage connectMessage = message as ConnectMessage;
+            var connectMessage = message as ConnectMessage;
 
-            bool authenticatedServerPassword = true;
+            var authenticatedServerPassword = true;
             if (server.HasPassword())
             {
                 authenticatedServerPassword = server.CheckPassword(connectMessage.ServerPassword);
             }
 
-            User user = server.GetUsers().Find(u => u.Username == connectMessage.Username && u.Password == connectMessage.Password);
-            bool authenticatedUser = (user != null);
+            var user = server.GetUsers().Find(u => u.Username == connectMessage.Username && u.Password == connectMessage.Password);
+            var authenticatedUser = (user != null);
 
-            bool authenticated = authenticatedServerPassword && authenticatedUser;
-            ConnectResponseMessage connectResponseMessage = new ConnectResponseMessage();
+            var authenticated = authenticatedServerPassword && authenticatedUser;
+            var connectResponseMessage = new ConnectResponseMessage();
             if (authenticated)
             {
-                string sessionId = Guid.NewGuid().ToString();
+                var sessionId = Guid.NewGuid().ToString();
                 user.SessionIds.Add(sessionId); 
                 connectResponseMessage.SessionId = sessionId;
                 server.AddClient(client);
@@ -34,16 +34,16 @@ namespace ChatServer.MessageHandler
                 if (user.SessionIds.Count == 1)
                 {
                     // Send user count to all clients (broadcast)
-                    UserCountMessage userCountMessage = new UserCountMessage
+                    var userCountMessage = new UserCountMessage
                     {
                         UserCount = server.GetUsers().Count,
                         UserOnlineCount = server.GetUsers().Count(u => u.SessionIds.Count > 0)
                     };
 
-                    string userCountMessageJson = JsonSerializer.Serialize(userCountMessage);
-                    byte[] userCountMessageBytes = System.Text.Encoding.UTF8.GetBytes(userCountMessageJson);
+                    var userCountMessageJson = JsonSerializer.Serialize(userCountMessage);
+                    var userCountMessageBytes = System.Text.Encoding.UTF8.GetBytes(userCountMessageJson);
 
-                    foreach (TcpClient remoteClient in server.GetClients())
+                    foreach (var remoteClient in server.GetClients())
                     {
                         remoteClient.GetStream().Write(userCountMessageBytes, 0, userCountMessageBytes.Length);
                     }
@@ -52,8 +52,8 @@ namespace ChatServer.MessageHandler
 
             connectResponseMessage.Success = authenticated;
 
-            string json = JsonSerializer.Serialize(connectResponseMessage);
-            byte[] msg = System.Text.Encoding.UTF8.GetBytes(json);
+            var json = JsonSerializer.Serialize(connectResponseMessage);
+            var msg = System.Text.Encoding.UTF8.GetBytes(json);
             client.GetStream().Write(msg, 0, msg.Length);
         }
     }
